@@ -1,0 +1,136 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Formulario Materia</h2>
+    <p>Ingrese la información necesaria para agregar o actualizar una materia</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>@ViewBag.Titulo</h3>
+            <h5>Ingrese los datos</h5>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Form", "Materia", FormMethod.Post, new { enctype = "multipart/fomr-data" }))
+        {
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdMateria, new { @class = "control-label col-md-2 hidden" })
+
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.IdMateria, new { @class = "form-control hidden", @readonly = true })
+
+                        @Html.ValidationMessageFor(model => model.IdMateria)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Nombre)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Creditos, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.Creditos, new { @class = "form-control", @id = "txtCreditos" })
+                        @Html.ValidationMessageFor(model => model.Creditos)
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Semestre, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+
+                        @Html.DropDownListFor(model => model.Semestre.IdSemestre, new SelectList(Model.Semestre.Semestres, "IdSemestre", "Nombre"), "Selecciona una opcion", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Semestre.IdSemestre)
+
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Horario.Grupo.Plantel, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+
+                        @Html.DropDownListFor(model => model.Horario.Grupo.Plantel.IdPlantel, new SelectList(Model.Horario.Grupo.Plantel.Planteles, "IdPlantel", "Nombre"), "Selecciona una opcion", new { @class = "form-control", @id = "ddlPlantel" })
+                        @Html.ValidationMessageFor(model => model.Horario.Grupo.Plantel.IdPlantel)
+
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Horario.Grupo, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+                        @if (Model.Horario.Grupo.Grupos == null || Model.Horario.Grupo.Grupos.Count == 0)
+                        {
+                            @Html.DropDownListFor(model => model.Horario.Grupo.IdGrupo, new SelectList(string.Empty, "Value", "Text"), "Selecciona una opcion", new { @class = "form-control", @id = "ddlGrupo" })
+                            @Html.ValidationMessageFor(model => model.Horario.Grupo.IdGrupo)
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Horario.Grupo.IdGrupo, new SelectList(Model.Horario.Grupo.Grupos, "IdGrupo", "Nombre"), "Selecciona una opcion", new { @class = "form-control", @id = "ddlGrupo" })
+                            @Html.ValidationMessageFor(model => model.Horario.Grupo.IdGrupo)
+                        }
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="@ViewBag.Titulo" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            @Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+</div>
+@*@Scripts.Render("~/bundles/jquery")*@
+@section Script {
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlPlantel").change(function () {
+                $("#ddlGrupo").empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetGrupos")',
+                    dataType: 'json',
+                    data: { idPlantel: $("#ddlPlantel").val() },
+                    success: function (grupos) {
+                        $("#ddlGrupo").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                        $.each(grupos, function (i, grupos) {
+                            $("#ddlGrupo").append('<option value="'
+                                + grupos.IdGrupo + '">'
+                                + grupos.Nombre + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
