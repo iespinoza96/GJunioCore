@@ -17,6 +17,8 @@ public partial class LescogidoProgramacionNcapasGjContext : DbContext
 
     public virtual DbSet<Grupo> Grupos { get; set; }
 
+    public virtual DbSet<Horario> Horarios { get; set; }
+
     public virtual DbSet<Materium> Materia { get; set; }
 
     public virtual DbSet<Plantel> Plantels { get; set; }
@@ -24,7 +26,7 @@ public partial class LescogidoProgramacionNcapasGjContext : DbContext
     public virtual DbSet<Semestre> Semestres { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=.; Database= LEscogidoProgramacionNCapasGJ; TrustServerCertificate=True; User ID=sa; Password=pass@word1;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,10 +46,27 @@ public partial class LescogidoProgramacionNcapasGjContext : DbContext
                 .HasConstraintName("FK__Grupo__IdPlantel__29572725");
         });
 
+        modelBuilder.Entity<Horario>(entity =>
+        {
+            entity.HasKey(e => e.IdHorario).HasName("PK__Horario__1539229B974A9526");
+
+            entity.ToTable("Horario");
+
+            entity.Property(e => e.Turno)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdMateriaNavigation).WithMany(p => p.Horarios)
+                .HasForeignKey(d => d.IdMateria)
+                .HasConstraintName("FK__Horario__IdMater__2E1BDC42");
+        });
+
         modelBuilder.Entity<Materium>(entity =>
         {
             entity.HasKey(e => e.IdMateria).HasName("PK__Materia__EC1746701E14FF71");
 
+            entity.Property(e => e.FechaCreacion).HasColumnType("date");
+            entity.Property(e => e.Imagen).IsUnicode(false);
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);

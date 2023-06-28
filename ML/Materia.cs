@@ -13,6 +13,10 @@ namespace ML
         public byte Creditos { get; set; }
         public ML.Semestre Semestre { get; set; } // propiedad de navegacion fk
         public ML.Horario Horario { get; set; }
+
+        public string Imagen { get; set; }
+
+        public string FechaCreacion { get; set; }
         public List<object> Materias { get; set; }
     }
 }
