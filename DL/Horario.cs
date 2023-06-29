@@ -11,5 +11,9 @@ public partial class Horario
 
     public int? IdMateria { get; set; }
 
+    public int? IdGrupo { get; set; }
+
+    public virtual Grupo? IdGrupoNavigation { get; set; }
+
     public virtual Materium? IdMateriaNavigation { get; set; }
 }

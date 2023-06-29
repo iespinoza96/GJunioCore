@@ -20,6 +20,7 @@ public partial class Materium
     public virtual ICollection<Horario> Horarios { get; set; } = new List<Horario>();
 
     public virtual Semestre? IdSemestreNavigation { get; set; }
-
     public string NombreSemestre { get; set; }
+    public string NombreGrupo { get; set; }
+    public string NombrePlantel { get; set; }
 }

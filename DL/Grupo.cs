@@ -11,5 +11,7 @@ public partial class Grupo
 
     public int? IdPlantel { get; set; }
 
+    public virtual ICollection<Horario> Horarios { get; set; } = new List<Horario>();
+
     public virtual Plantel? IdPlantelNavigation { get; set; }
 }
