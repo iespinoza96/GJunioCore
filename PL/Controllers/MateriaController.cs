@@ -80,33 +80,55 @@ namespace PL.Controllers
         [HttpPost]
         public ActionResult Form(ML.Materia materia)
         {
-            if (materia.IdMateria == 0)
+            if (ModelState.IsValid)
             {
-                //AGREGAR
-                ML.Result result = BL.Materia.Add(materia);
-
-                if (result.Correct)
+                if (materia.IdMateria == 0)
                 {
-                    ViewBag.Titulo = "Registro Exitoso";
-                    ViewBag.Message = result.Message;
-                    return View("Modal");
+                    //AGREGAR
+                    ML.Result result = BL.Materia.Add(materia);
+
+                    if (result.Correct)
+                    {
+                        ViewBag.Titulo = "Registro Exitoso";
+                        ViewBag.Message = result.Message;
+                        return View("Modal");
+                    }
+                    else
+                    {
+                        ViewBag.Titulo = "ERROR";
+                        ViewBag.Message = result.Message;
+                        return View("Modal");
+                    }
+
                 }
                 else
                 {
-                    ViewBag.Titulo = "ERROR";
-                    ViewBag.Message = result.Message;
-                    return View("Modal");
+                    //ACTUALIZAR
+                    //ML.Result result = BL.Materia.
+                    return View();
+
+
                 }
 
             }
+
             else
             {
-                //ACTUALIZAR
-                //ML.Result result = BL.Materia.
-                return View();
+                ML.Result resultSemestre = BL.Semestre.GetAll();//mandamos a llamar a getall de semestres 
+                ML.Result resultPlantel = BL.Plantel.GetAll();
 
+                
+                materia.Semestre = new ML.Semestre();
+                materia.Horario = new ML.Horario();
+                materia.Horario.Grupo = new ML.Grupo();
+                materia.Horario.Grupo.Plantel = new ML.Plantel();
 
+                materia.Semestre.Semestres = resultSemestre.Objects; // guardamos la lista de semestre en un objeto materia
+                materia.Horario.Grupo.Plantel.Planteles = resultPlantel.Objects;
+
+                return View(materia);
             }
+          
            
         }
 
