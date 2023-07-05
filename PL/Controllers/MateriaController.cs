@@ -80,8 +80,18 @@ namespace PL.Controllers
         [HttpPost]
         public ActionResult Form(ML.Materia materia)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                IFormFile image = Request.Form.Files["fileImage"];
+
+                //valido si traigo imagen
+                if (image != null)
+                {
+                    //llamar al metodo que convierte a bytes la imagen
+                    byte[] ImagenBytes = ConvertToBytes(image);
+                    //convierto a base 64 la imagen y la guardo en mi objeto materia
+                    materia.Imagen = Convert.ToBase64String(ImagenBytes);
+                }
                 if (materia.IdMateria == 0)
                 {
                     //AGREGAR
@@ -138,6 +148,17 @@ namespace PL.Controllers
             
             ML.Result result = BL.Grupo.GetByIdPlantel(idPlantel);
             return Json(result.Objects);
+        }
+
+        public static byte[] ConvertToBytes(IFormFile imagen)
+        {
+
+            using var fileStream = imagen.OpenReadStream();
+
+            byte[] bytes = new byte[fileStream.Length];
+            fileStream.Read(bytes, 0, (int)fileStream.Length);
+
+            return bytes;
         }
     }
 }

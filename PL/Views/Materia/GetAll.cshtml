@@ -52,7 +52,15 @@
                                 <td class="visually-hidden">@materia.Semestre.IdSemestre</td>
                                 <td>@materia.Semestre.Nombre</td>
                                 <td>@materia.FechaCreacion</td>
-                                <td>@materia.Imagen</td>
+                                <td>@if (@materia.Imagen == null)
+                                    {
+                                        <img src="~/Imagenes/SIN-IMAGEN.jpg" />
+                                    }
+                                    else
+                                    {
+                                        <img src="data:image/png;base64,@materia.Imagen" />
+                                    }
+                                </td>
                                 <td><button type="button" class="btn btn-danger bi bi-recycle"></button></td>
 
                             </tr>
