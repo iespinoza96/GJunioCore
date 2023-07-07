@@ -8,8 +8,12 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
-            ML.Result result = BL.Materia.GetAll();
             ML.Materia materia = new ML.Materia();
+            materia.Nombre = "";
+            materia.Semestre = new ML.Semestre();
+            materia.Semestre.Nombre = "";
+            
+            ML.Result result = BL.Materia.GetAll(materia);          
 
             if (result.Correct)
             {
@@ -23,6 +27,22 @@ namespace PL.Controllers
                 return View(materia);
             }
 
+        }
+        [HttpPost]
+        public ActionResult GetAll(ML.Materia materia)
+        {
+            ML.Result result = BL.Materia.GetAll(materia);
+            if (result.Correct)
+            {
+                materia.Materias = result.Objects;
+                return View(materia);
+            }
+            else
+            {
+                //materia.Materias = new List<object> ();
+                ViewBag.Message = result.Message;
+                return View(materia);
+            }
         }
 
         [HttpGet]

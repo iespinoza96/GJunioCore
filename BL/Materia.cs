@@ -4,7 +4,7 @@ namespace BL
 {
     public class Materia
     {
-        public static ML.Result GetAll()
+        public static ML.Result GetAll(ML.Materia materias)
         {
             ML.Result result = new ML.Result();
 
@@ -14,7 +14,7 @@ namespace BL
 
                 {
 
-                    var query = context.Materia.FromSqlRaw($"MateriaGetAll").ToList();
+                    var query = context.Materia.FromSqlRaw($"MateriaGetAll '{materias.Nombre}', '{materias.Semestre.Nombre}'").ToList();
                     // var query = context.MateriaGetAll().ToList();
 
                     result.Objects = new List<object>();

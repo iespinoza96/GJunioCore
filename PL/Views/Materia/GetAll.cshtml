@@ -15,9 +15,21 @@
     <div>
         @*<button type="button" class="btn btn-success">Agregar</button>*@
         @Html.ActionLink("Agregar", "Form", "Materia", new { @class = "btn btn-success" })
+        @using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <div class="row">
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Nombre, new {@class = "form-control", placeholder = "Nombre"} )
+            </div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Semestre.Nombre, new {@class = "form-control", placeholder = "Semestre"})
+            </div>
+            <div class="col-md-4">
+                <input type="submit" value="Buscar" class="btn btn-dark" />
+            </div>
+        </div>    
+        }
     </div>
-
-
 
 
     <div>
