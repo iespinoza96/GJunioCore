@@ -113,13 +113,12 @@
 {
     <script type="text/javascript">
 
-         function CambiarStatus(idAlumno, e) {
-            var status = e.checked
+         function CambiarStatus(status, idMateria) {
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("CambiarStatus")',
                 dataType: 'json',
-                data: { idAlumno, status },
+                data: { status, idMateria },
                 success: {},
                 error: function (ex) {
                     alert('Failed.' + ex);

@@ -181,9 +181,9 @@ namespace PL.Controllers
             return bytes;
         }
         [HttpPost]
-        public JsonResult CambiarStatus(bool status, int idUsuario)
+        public JsonResult CambiarStatus(bool status, int idMateria)
         {
-            ML.Result result = BL.Materia.UpdateStatus(status, idUsuario);
+            ML.Result result = BL.Materia.UpdateStatus(status, idMateria);
             return Json(result);
         }
     }
