@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ML;
 
 namespace BL
 {
@@ -32,8 +33,7 @@ namespace BL
                             materia.Semestre = new ML.Semestre(); //instancia de la propiedad de navegación, solo se instancia una vez
                             materia.Semestre.IdSemestre = obj.IdSemestre.Value;
                             materia.Semestre.Nombre = obj.NombreSemestre;
-
-
+                            materia.Status = obj.Status;
 
                             result.Objects.Add(materia);
                         }
@@ -124,6 +124,33 @@ namespace BL
                 result.Correct = false;
                 result.Ex = ex;
                 result.Message = ex.Message;
+            }
+            return result;
+        }
+        public static ML.Result UpdateStatus(bool status, int idMateria)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.LescogidoProgramacionNcapasGjContext context = new DL.LescogidoProgramacionNcapasGjContext())
+                {
+                    int query = context.Database.ExecuteSqlRaw($"MateriaStatusUpdate {status}, {idMateria}");
+                   
+                    if(query > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Ex=ex;
+                result.Message=ex.Message;
             }
             return result;
         }

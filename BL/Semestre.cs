@@ -28,12 +28,7 @@ namespace BL
                     {
                         foreach (DL.Semestre obj in query)
                         {
-                            ML.Semestre semestre = new ML.Semestre();
-
-                            semestre.IdSemestre = obj.IdSemestre;
-                            semestre.Nombre = obj.Nombre;
-
-
+                            ML.Semestre semestre = new ML.Semestre(obj.IdSemestre, obj.Nombre);
 
                             result.Objects.Add(semestre);
                         }

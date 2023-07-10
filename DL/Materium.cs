@@ -23,4 +23,5 @@ public partial class Materium
     public string NombreSemestre { get; set; }
     public string NombreGrupo { get; set; }
     public string NombrePlantel { get; set; }
+    public bool Status { get; set; }
 }

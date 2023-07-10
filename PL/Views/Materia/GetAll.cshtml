@@ -17,21 +17,22 @@
         @Html.ActionLink("Agregar", "Form", "Materia", new { @class = "btn btn-success" })
         @using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-        <div class="row">
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.Nombre, new {@class = "form-control", placeholder = "Nombre"} )
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.TextBoxFor(model => model.Nombre, new {@class = "form-control", placeholder = "Nombre"} )
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(model => model.Semestre.Nombre, new {@class = "form-control", placeholder = "Semestre"})
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Buscar" class="btn btn-dark" />
+                </div>
             </div>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.Semestre.Nombre, new {@class = "form-control", placeholder = "Semestre"})
-            </div>
-            <div class="col-md-4">
-                <input type="submit" value="Buscar" class="btn btn-dark" />
-            </div>
-        </div>    
         }
     </div>
 
-
+    <br />
+    <hr />
     <div>
         @if (Model.Materias != null)
         {
@@ -47,6 +48,7 @@
                             <th scope="col">Semestre</th>
                             <th scope="col">Fecha Creación</th>
                             <th scope="col">Imagen</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Eliminar</th>
                         </tr>
                     </thead>
@@ -64,17 +66,27 @@
                                 <td class="visually-hidden">@materia.Semestre.IdSemestre</td>
                                 <td>@materia.Semestre.Nombre</td>
                                 <td>@materia.FechaCreacion</td>
-                                <td>@if (@materia.Imagen == null)
+                                <td>
+                                    @if (@materia.Imagen == null || materia.Imagen == "")
                                     {
-                                        <img src="~/Imagenes/SIN-IMAGEN.jpg" />
+                                        <img src="~/Imagenes/SIN-IMAGEN.jpg" style="width: 50px; height:50px" />
                                     }
                                     else
                                     {
                                         <img src="data:image/png;base64,@materia.Imagen" />
                                     }
                                 </td>
-                                <td><button type="button" class="btn btn-danger bi bi-recycle"></button></td>
+                                @if(materia.Status == true)
+                                {
+                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this.checked)" checked /></div></td>
+                                }
+                                else
+                                {
+                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this)" /></div></td>
+                                }
 
+
+                                <td><button type="button" class="btn btn-danger bi bi-recycle"></button></td>
                             </tr>
 
                         }
@@ -90,11 +102,28 @@
                 @ViewBag.Message
             </div>
         }
+        }
     </div>
 
 
 
 </div>
 
+@section Scripts
+{
+    <script type="text/javascript">
+
+        function CambiarStatus(checkbox){
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: { status: checkbox},
+                url: "@Url.Action("CambiarStatus")",
+                success: {}
+            });
+        }
+
+    </script>
+}
 
 
