@@ -78,11 +78,11 @@
                                 </td>
                                 @if(materia.Status == true)
                                 {
-                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this.checked)" checked /></div></td>
+                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this.checked, @materia.IdMateria)" checked /></div></td>
                                 }
                                 else
                                 {
-                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this)" /></div></td>
+                                    <td><div class="form-check form-switch"><input type="checkbox" class="form-check-input" onclick="CambiarStatus(this.checked,@materia.IdMateria)" /></div></td>
                                 }
 
 
@@ -113,13 +113,17 @@
 {
     <script type="text/javascript">
 
-        function CambiarStatus(checkbox){
+         function CambiarStatus(idAlumno, e) {
+            var status = e.checked
             $.ajax({
-                type: "POST",
+                type: 'POST',
+                url: '@Url.Action("CambiarStatus")',
                 dataType: 'json',
-                data: { status: checkbox},
-                url: "@Url.Action("CambiarStatus")",
-                success: {}
+                data: { idAlumno, status },
+                success: {},
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
             });
         }
 
