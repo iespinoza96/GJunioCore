@@ -61,6 +61,18 @@
                     </div>
 
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FechaCreacion, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+                        @*@Html.TextBoxFor(model => model.FechaCreacion, new { @class = "form-control", @id = "datepicker", @placeholder= "dd/MM/yyyy"})*@
+                        @Html.TextBoxFor(model => model.FechaCreacion, new { @class = "form-control datefield", @type= "date" })
+                        @Html.ValidationMessageFor(model => model.FechaCreacion)
+                    </div>
+
+                </div>
+
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.Horario.Grupo.Plantel, new { @class = "control-label col-md-2" })
                     <div class="col-md-3">
@@ -91,11 +103,30 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.Horario.Turno, new { @class = "control-label col-md-2" })
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.Horario.Turno, new { @class = "form-control", @id = "txtTurno" })
+                        @Html.ValidationMessageFor(model => model.Horario.Turno)
+                    </div>
+
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.Imagen, new { @class = "control-label col-md-2" })
                     <div class="col-md-3">
                        <input type="file" name="fileImage">
                     </div>
-
+                    <td>
+                        @if (Model.Imagen == null)
+                        {
+                            <img src="~/Imagenes/SIN-IMAGEN.jpg" />
+                        }
+                        else
+                        {
+                            <img src="data:image/png;base64,@Model.Imagen" />
+                        }
+                        @Html.HiddenFor(model => model.Imagen)
+                    </td>
                 </div>
 
                 <div class="form-group">
@@ -116,6 +147,10 @@
 </div>
 @*@Scripts.Render("~/bundles/jquery")*@
 @section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -163,6 +198,12 @@
                 var EmailRegex = /^([a-zA-Z0-9_.+-])+\@@(([a - zA - Z0 - 9 -]) +\.)+([a-zA-Z0-9]{2,4})+$/;
                 return EmailRegex.test(email);
             }
+
+            $(function () {
+                $("#datepicker").datepicker({
+                    
+                });
+            });
         });
 
 

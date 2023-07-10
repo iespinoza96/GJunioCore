@@ -63,7 +63,7 @@ namespace BL
             {
                 using (DL.LescogidoProgramacionNcapasGjContext context = new DL.LescogidoProgramacionNcapasGjContext())
                 {
-                    int queryResult = context.Database.ExecuteSql($"MateriaAdd '{materia.Nombre}', {materia.Creditos}, {materia.Semestre.IdSemestre}");
+                    int queryResult = context.Database.ExecuteSql($"MateriaAdd '{materia.Nombre}', {materia.Creditos}, {materia.Semestre.IdSemestre},'{materia.Imagen}','{materia.FechaCreacion}','{materia.Horario.Turno}',{materia.Horario.Grupo.IdGrupo}");
 
                     if (queryResult > 0)
                     {
