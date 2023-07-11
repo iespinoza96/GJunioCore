@@ -186,5 +186,8 @@ namespace PL.Controllers
             ML.Result result = BL.Materia.UpdateStatus(status, idMateria);
             return Json(result);
         }
+
+
+
     }
 }
