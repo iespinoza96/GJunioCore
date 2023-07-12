@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Imagenes\" />
+    <Folder Include="wwwroot\CopiasExcel\" />
   </ItemGroup>
 
 </Project>

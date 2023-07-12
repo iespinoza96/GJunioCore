@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ML;
+using System.Data;
 
 namespace BL
 {
@@ -152,6 +153,70 @@ namespace BL
                 result.Ex=ex;
                 result.Message=ex.Message;
             }
+            return result;
+        }
+        public static ML.Result ConvertExcelToDataTable(string connString)
+        {
+            ML.Result result = new ML.Result();
+
+            //try
+            //{
+            //    using (OleDbConnection context = new OleDbConnection(connString))
+            //    {
+            //        string query = "SELECT * FROM [Hoja1$]";
+            //        //string query = "SELECT * FROM [Sheet1$]";
+            //        using (OleDbCommand cmd = new OleDbCommand())
+            //        {
+            //            cmd.CommandText = query;
+            //            cmd.Connection = context;
+
+
+            //            OleDbDataAdapter da = new OleDbDataAdapter();
+            //            da.SelectCommand = cmd;
+
+            //            DataTable tableAlumno = new DataTable();
+
+            //            da.Fill(tableAlumno);
+
+            //            if (tableAlumno.Rows.Count > 0)
+            //            {
+            //                result.Objects = new List<object>();
+
+            //                foreach (DataRow row in tableAlumno.Rows)
+            //                {
+            //                    ML.Semestre semestre = new ML.Semestre();
+
+            //                    semestre.Nombre = row[0].ToString();
+
+
+            //                    result.Objects.Add(semestre);
+            //                }
+
+            //                result.Correct = true;
+
+            //            }
+
+            //            result.Object = tableAlumno;
+
+            //            if (tableAlumno.Rows.Count > 1)
+            //            {
+            //                result.Correct = true;
+            //            }
+            //            else
+            //            {
+            //                result.Correct = false;
+            //                result.ErrorMessage = "No existen registros en el excel";
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.Correct = false;
+            //    result.ErrorMessage = ex.Message;
+
+            //}
+
             return result;
         }
 

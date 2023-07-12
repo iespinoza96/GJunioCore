@@ -21,7 +21,7 @@
             <a><input type="submit" value="TXT" class="btn btn-primary col-md-12" id="txt" /></a>
         </div>
     </div>
-    @using (Html.BeginForm("PostCargaMasiva", "MateriaCargaMasiva", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("CargaMasivaExcel", "MateriaCargaMasiva", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="row g-3" id="fuImage" style="display:none;">
             <div class="col-md-6">
@@ -46,6 +46,9 @@
                 </div>
             
         </div>
+    }
+    @using (Html.BeginForm("PostCargaMasiva", "MateriaCargaMasiva", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
         <br />
         <div class="row g-3" id="fuTXT" style="display:none;">
             <div class="col-md-6">

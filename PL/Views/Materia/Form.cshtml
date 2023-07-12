@@ -114,16 +114,16 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Imagen, new { @class = "control-label col-md-2" })
                     <div class="col-md-3">
-                       <input type="file" name="fileImage">
+                        <input type="file" id="fileImage" name="fileImage" onchange="validateFile(), visualizarImagen(this)">
                     </div>
                     <td>
                         @if (Model.Imagen == null)
                         {
-                            <img src="~/Imagenes/SIN-IMAGEN.jpg" />
+                            <img src="~/Imagenes/SIN-IMAGEN.jpg" id="Img"  />
                         }
                         else
                         {
-                            <img src="data:image/png;base64,@Model.Imagen" />
+                            <img src="data:image/png;base64,@Model.Imagen" id="Img" />
                         }
                         @Html.HiddenFor(model => model.Imagen)
                     </td>
@@ -206,6 +206,33 @@
             });
         });
 
+        function validateFile() {
+            var allowedExtension = ['jpeg', 'jpg', 'png'];
+            var fileExtension = document.getElementById('fileImage').value.split('.').pop().toLowerCase();
+            var isValidFile = false;
+            for (var index in allowedExtension) {
+                if (fileExtension === allowedExtension[index]) {
+                    isValidFile = true;
+                    break;
+                }
+            }
+            if (!isValidFile) {
+                alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));
+                document.getElementById('fileImage').value = ""
+            }
+            return isValidFile;
+        }
+
+        function visualizarImagen(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#Img').attr('src', e.target.result);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
 
     </script>
