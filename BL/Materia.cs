@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ML;
 using System.Data;
+using System.Data.OleDb;
 
 namespace BL
 {
@@ -64,7 +65,7 @@ namespace BL
             {
                 using (DL.LescogidoProgramacionNcapasGjContext context = new DL.LescogidoProgramacionNcapasGjContext())
                 {
-                    int queryResult = context.Database.ExecuteSql($"MateriaAdd '{materia.Nombre}', {materia.Creditos}, {materia.Semestre.IdSemestre},'{materia.Imagen}','{materia.FechaCreacion}','{materia.Horario.Turno}',{materia.Horario.Grupo.IdGrupo}");
+                    int queryResult = context.Database.ExecuteSqlRaw($"MateriaAdd '{materia.Nombre}', {materia.Creditos}, {materia.Semestre.IdSemestre},'{materia.Imagen}','{materia.FechaCreacion}','{materia.Horario.Turno}',{materia.Horario.Grupo.IdGrupo}");
 
                     if (queryResult > 0)
                     {
@@ -159,63 +160,63 @@ namespace BL
         {
             ML.Result result = new ML.Result();
 
-            //try
-            //{
-            //    using (OleDbConnection context = new OleDbConnection(connString))
-            //    {
-            //        string query = "SELECT * FROM [Hoja1$]";
-            //        //string query = "SELECT * FROM [Sheet1$]";
-            //        using (OleDbCommand cmd = new OleDbCommand())
-            //        {
-            //            cmd.CommandText = query;
-            //            cmd.Connection = context;
+            try
+            {
+                using (OleDbConnection context = new OleDbConnection(connString))
+                {
+                    string query = "SELECT * FROM [Hoja1$]";
+                    //string query = "SELECT * FROM [Sheet1$]";
+                    using (OleDbCommand cmd = new OleDbCommand())
+                    {
+                        cmd.CommandText = query;
+                        cmd.Connection = context;
 
 
-            //            OleDbDataAdapter da = new OleDbDataAdapter();
-            //            da.SelectCommand = cmd;
+                        OleDbDataAdapter da = new OleDbDataAdapter();
+                        da.SelectCommand = cmd;
 
-            //            DataTable tableAlumno = new DataTable();
+                        DataTable tableAlumno = new DataTable();
 
-            //            da.Fill(tableAlumno);
+                        da.Fill(tableAlumno);
 
-            //            if (tableAlumno.Rows.Count > 0)
-            //            {
-            //                result.Objects = new List<object>();
+                        if (tableAlumno.Rows.Count > 0)
+                        {
+                            result.Objects = new List<object>();
 
-            //                foreach (DataRow row in tableAlumno.Rows)
-            //                {
-            //                    ML.Semestre semestre = new ML.Semestre();
+                            foreach (DataRow row in tableAlumno.Rows)
+                            {
+                                ML.Semestre semestre = new ML.Semestre();
 
-            //                    semestre.Nombre = row[0].ToString();
+                                semestre.Nombre = row[0].ToString();
 
 
-            //                    result.Objects.Add(semestre);
-            //                }
+                                result.Objects.Add(semestre);
+                            }
 
-            //                result.Correct = true;
+                            result.Correct = true;
 
-            //            }
+                        }
 
-            //            result.Object = tableAlumno;
+                        result.Object = tableAlumno;
 
-            //            if (tableAlumno.Rows.Count > 1)
-            //            {
-            //                result.Correct = true;
-            //            }
-            //            else
-            //            {
-            //                result.Correct = false;
-            //                result.ErrorMessage = "No existen registros en el excel";
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    result.Correct = false;
-            //    result.ErrorMessage = ex.Message;
+                        if (tableAlumno.Rows.Count > 1)
+                        {
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.Message = "No existen registros en el excel";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Message = ex.Message;
 
-            //}
+            }
 
             return result;
         }

@@ -83,8 +83,8 @@ namespace PL.Controllers
                 //obtener el nombre de nuestro archivo
                 string fileName = Path.GetFileName(file.FileName);
                 string extensionArchivo = Path.GetExtension(file.FileName).ToLower();
-                string extensionAceptada = ".xlsx";
-                string folderPath = "C:\\Users\\digis\\source\\repos\\GJunioCore\\PL\\wwwroot\\CopiasExcel";
+                string extensionAceptada = configuration["TipoExcel"];
+                string folderPath = configuration["PathFolder:ruta"];
                 if (extensionArchivo == extensionAceptada)
                 {
                     //crear una copia del archivo cargado
@@ -98,7 +98,7 @@ namespace PL.Controllers
                         }//Hasta aqui nos quedamos
 
                         //
-                        string connString = configuration["ExcelConString"] + filePath;//cadena de conexion y ruta especifica del archivo
+                        string connString = configuration["ExcelConString:value"] + filePath;//cadena de conexion y ruta especifica del archivo
 
                         //crear un metodo en BL.Materia
                         ML.Result resultExcelDt = BL.Materia.ConvertExcelToDataTable(connString);
