@@ -56,23 +56,20 @@ namespace PL.Controllers
 
                     if (result.Correct)
                     {
-
+                        //crear lista para saber cuantos registros se agregaron
+                    }
+                    else
+                    {
+                        //crear lista de errores y gurardalos en un bloc de notas
                     }
 
-
-
-
-
-                    // Aquí puedes guardar el objeto `person` en tu base de datos.
-                    // Por ejemplo, utilizando una instancia de tu DbContext
-                    // _dbContext.Persons.Add(person);
                 }
             }
 
             //_dbContext.SaveChanges();
 
             // Redireccionar a una vista o realizar otra acción según tus necesidades
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAll");
         }
         [HttpPost]
         public ActionResult CargaMasivaExcel()
