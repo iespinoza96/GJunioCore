@@ -113,7 +113,7 @@ namespace PL.Controllers
                                 if (resultValidacion.Objects.Count == 0)
                                 {
                                     resultValidacion.Correct = true;
-                                    HttpContext.Session.SetString("PathArchivo", filePath);//crear la session
+                                    HttpContext.Session.SetString("PathArchivo", filePath);//crear la session -- aqui nos quedamos
 
                                 }
 
