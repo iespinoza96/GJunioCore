@@ -164,8 +164,8 @@ namespace BL
             {
                 using (OleDbConnection context = new OleDbConnection(connString))
                 {
-                    string query = "SELECT * FROM [Hoja1$]";
-                    //string query = "SELECT * FROM [Sheet1$]";
+                    //string query = "SELECT * FROM [Hoja1$]";
+                    string query = "SELECT * FROM [Sheet1$]";
                     using (OleDbCommand cmd = new OleDbCommand())
                     {
                         cmd.CommandText = query;
@@ -185,12 +185,12 @@ namespace BL
 
                             foreach (DataRow row in tableAlumno.Rows)
                             {
-                                ML.Semestre semestre = new ML.Semestre();
+                                ML.Materia materia = new ML.Materia();
 
-                                semestre.Nombre = row[0].ToString();
-
-
-                                result.Objects.Add(semestre);
+                                materia.Nombre = row[0].ToString();
+                                materia.Creditos = byte.Parse(row[1].ToString());
+                                materia.FechaCreacion = row[3].ToString();
+                                result.Objects.Add(materia);
                             }
 
                             result.Correct = true;
@@ -220,6 +220,41 @@ namespace BL
 
             return result;
         }
+        public static ML.Result ValidarExcel(List<object> Objects)
+        {
+            ML.Result result = new ML.Result();
 
+            try
+            {
+                result.Objects = new List<object>();
+
+                int i = 1;
+                foreach (ML.Materia materia in Objects)
+                {
+                    ML.ErrorExcel error = new ML.ErrorExcel();
+                    error.IdRegistro = i++;
+
+                    //operador ternario - hacer una validacion para cambiar un valor
+                    materia.Nombre = (materia.Nombre == "") ? error.Mensaje += "Ingresar el nombre  " : materia.Nombre;
+
+                    if (error.Mensaje != null)
+                    {
+                        result.Objects.Add(error);
+                    }
+
+
+                }
+                result.Correct = true;
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+
+            }
+
+            return result;
+        }
     }
+
+
 }
