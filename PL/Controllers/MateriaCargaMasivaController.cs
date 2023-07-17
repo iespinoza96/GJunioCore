@@ -152,7 +152,7 @@ namespace PL.Controllers
                         ML.Result resultAdd = BL.Materia.Add(semestreItem);
                         if (!resultAdd.Correct)
                         {
-                            resultErrores.Objects.Add("No se insertó el Semestre con nombre: " + semestreItem.Nombre + " Error: " + resultAdd.ErrorMessage);
+                            resultErrores.Objects.Add("No se insertó el Semestre con nombre: " + semestreItem.Nombre + " Error: " + resultAdd.Message);
                         }
                     }
                     if (resultErrores.Objects.Count > 0)
@@ -175,6 +175,8 @@ namespace PL.Controllers
                     }
 
                 }
+
+                return View();
             }
         }
     }
