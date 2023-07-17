@@ -138,7 +138,7 @@ namespace PL.Controllers
             else
             {
                 string rutaArchivoExcel = HttpContext.Session.GetString("PathArchivo");
-                string connectionString = configuration["ExcelConString"] + rutaArchivoExcel;
+                string connectionString = configuration["ExcelConString:value"] + rutaArchivoExcel;
 
                 ML.Result resultData = BL.Materia.ConvertExcelToDataTable(connectionString);
                 if (resultData.Correct)
@@ -146,13 +146,13 @@ namespace PL.Controllers
                     ML.Result resultErrores = new ML.Result();
                     resultErrores.Objects = new List<object>();
 
-                    foreach (ML.Materia semestreItem in resultData.Objects)
+                    foreach (ML.Materia materiaItem in resultData.Objects)
                     {
 
-                        ML.Result resultAdd = BL.Materia.Add(semestreItem);
+                        ML.Result resultAdd = BL.Materia.Add(materiaItem);
                         if (!resultAdd.Correct)
                         {
-                            resultErrores.Objects.Add("No se insertó el Semestre con nombre: " + semestreItem.Nombre + " Error: " + resultAdd.Message);
+                            resultErrores.Objects.Add("No se insertó el Semestre con nombre: " + materiaItem.Nombre + " Error: " + resultAdd.Message);
                         }
                     }
                     if (resultErrores.Objects.Count > 0)
@@ -176,7 +176,7 @@ namespace PL.Controllers
 
                 }
 
-                return View();
+                return View("GetAll");
             }
         }
     }

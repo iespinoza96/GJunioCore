@@ -164,8 +164,8 @@ namespace BL
             {
                 using (OleDbConnection context = new OleDbConnection(connString))
                 {
-                    //string query = "SELECT * FROM [Hoja1$]";
-                    string query = "SELECT * FROM [Sheet1$]";
+                    string query = "SELECT * FROM [Hoja1$]";
+                    //string query = "SELECT * FROM [Sheet1$]";
                     using (OleDbCommand cmd = new OleDbCommand())
                     {
                         cmd.CommandText = query;
