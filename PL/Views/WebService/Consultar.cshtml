@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="text-center">
+        <h1>Consumo de servicios web</h1>
+    </div>
+
+    <input type="button" class="btn btn-success" onclick="ConsumirServicio()" />
+    <hr />
+    <br />
+    <div>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Genero</th>
+                    <th>Direccion</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody id="bodytable">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function ConsumirServicio()
+        {
+            $.ajax({
+                type: 'GET',
+                url: 'https://randomuser.me/api',
+                dataType: 'json',
+                success:function(result) {
+                    $('#bodytable').append( '<tr> <td>' + result.results[0].name.first + '</td></tr>')
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+
+
+    </script>
+
+}

@@ -1,32 +1,30 @@
 ﻿using BL;
 using Microsoft.AspNetCore.Mvc;
 using ML;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SL.Controllers
 {
-    [Route("api/materia")]
+    [Route("api/materia")] //direccion base
     [ApiController]
     public class MateriaController : ControllerBase
     {
-        // GET: api/<MateriaController>
         [HttpGet]
-        [Route("GetAll")]
-        public IActionResult GetAll()
+        [Route("/GetAll")]
+        public IActionResult GetAll([FromBody]string nombre, int IdSemestre)//hacer uso del getall de materia
         {
             ML.Materia materia = new ML.Materia();
             materia.Semestre = new ML.Semestre();
-
             ML.Result result = BL.Materia.GetAll(materia);
-
             if (result.Correct)
             {
-                return Ok(result);//HTTP 200
+                return Ok(result);
             }
             else
             {
-                return NotFound();//http 404
+                return NotFound(result);
             }
         }
 
