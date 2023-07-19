@@ -1,10 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 namespace PL.Controllers
 {
     public class MateriaController : Controller
     {
+        private IHostingEnvironment environment;
+        private IConfiguration configuration;
+        public MateriaController(IHostingEnvironment _environment, IConfiguration _configuration)
+        {
+            environment = _environment;
+            configuration = _configuration;
+        }
         // GET: Materia
+        //[HttpGet]
+        //public ActionResult GetAll()
+        //{
+        //    ML.Materia materia = new ML.Materia();
+        //    materia.Nombre = "";
+        //    materia.Semestre = new ML.Semestre();
+        //    materia.Semestre.Nombre = "";
+
+        //    ML.Result result = BL.Materia.GetAll(materia);          
+
+        //    if (result.Correct)
+        //    {
+        //        materia.Materias = result.Objects;
+        //        return View(materia);
+        //    }
+        //    else
+        //    {
+        //        //materia.Materias = new List<object> ();
+        //        ViewBag.Message = result.Message;
+        //        return View(materia);
+        //    }
+
+        //}
+
         [HttpGet]
         public ActionResult GetAll()
         {
@@ -12,20 +43,36 @@ namespace PL.Controllers
             materia.Nombre = "";
             materia.Semestre = new ML.Semestre();
             materia.Semestre.Nombre = "";
-            
-            ML.Result result = BL.Materia.GetAll(materia);          
 
-            if (result.Correct)
+            ML.Result resultMateria = new ML.Result();
+            resultMateria.Objects = new List<Object>();
+
+            using (HttpClient client = new HttpClient())
             {
-                materia.Materias = result.Objects;
-                return View(materia);
+                string webApi = configuration["webapi"];
+                client.BaseAddress = new Uri(webApi);
+
+                var responseTask = client.GetAsync("GetAll");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<ML.Result>();
+                    readTask.Wait();
+
+                    foreach (var resultItem in readTask.Result.Objects)
+                    {
+                        ML.Materia resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Materia>(resultItem.ToString());
+                        resultMateria.Objects.Add(resultItemList);
+                    }
+                }
+
+                materia.Materias = resultMateria.Objects;
             }
-            else
-            {
-                //materia.Materias = new List<object> ();
-                ViewBag.Message = result.Message;
-                return View(materia);
-            }
+            return View(materia);
+
 
         }
         [HttpPost]

@@ -13,7 +13,7 @@ namespace SL.Controllers
     {
         [HttpGet]
         [Route("/GetAll")]
-        public IActionResult GetAll([FromBody]string nombre, int IdSemestre)//hacer uso del getall de materia
+        public IActionResult GetAll()//hacer uso del getall de materia
         {
             ML.Materia materia = new ML.Materia();
             materia.Semestre = new ML.Semestre();
