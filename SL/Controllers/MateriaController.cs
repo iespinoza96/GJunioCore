@@ -12,7 +12,7 @@ namespace SL.Controllers
     public class MateriaController : ControllerBase
     {
         [HttpGet]
-        [Route("/GetAll")]
+        [Route("GetAll")]
         public IActionResult GetAll()//hacer uso del getall de materia
         {
             ML.Materia materia = new ML.Materia();
