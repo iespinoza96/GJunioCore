@@ -20,14 +20,14 @@ namespace ML
         [RegularExpression(@"^[0-9]+$",
          ErrorMessage = "Solo se aceptan números.")]
         public byte Creditos { get; set; }
-        public ML.Semestre Semestre { get; set; } // propiedad de navegacion fk
-        public ML.Horario Horario { get; set; }
+        public ML.Semestre? Semestre { get; set; } // propiedad de navegacion fk
+        public ML.Horario? Horario { get; set; }
 
-        public string Imagen { get; set; }
+        public string? Imagen { get; set; }
         public bool Status { get; set; }
 
-        public string FechaCreacion { get; set; }
-        public List<object> Materias { get; set; }
+        public string? FechaCreacion { get; set; }
+        public List<object>? Materias { get; set; } = default(List<object>);
 
     }
 }

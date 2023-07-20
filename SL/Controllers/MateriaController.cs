@@ -28,17 +28,10 @@ namespace SL.Controllers
             }
         }
 
-        // GET api/<MateriaController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<MateriaController>
         [HttpPost]
-        [Route("Add")]
-        public IActionResult Add([FromBody] ML.Materia materia)
+        [Route("add")]
+        public ActionResult Add([FromBody] ML.Materia materia)
         {
             ML.Result result = BL.Materia.Add(materia);
 
@@ -52,26 +45,6 @@ namespace SL.Controllers
             }
         }
 
-        // PUT api/<MateriaController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ML.Materia materia)
-        {
-            ML.Result result = BL.Materia.Add(materia);
-
-            if (result.Correct)
-            {
-                return Ok(result);//HTTP 200
-            }
-            else
-            {
-                return NotFound();//http 404
-            }
-        }
-
-        // DELETE api/<MateriaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    
     }
 }

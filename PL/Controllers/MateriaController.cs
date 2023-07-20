@@ -126,7 +126,7 @@ namespace PL.Controllers
                     materia.Semestre.Semestres = resultSemestre.Objects;
                     materia.Horario.Grupo.Plantel.Planteles = resultPlantel.Objects;
 
-                    ML.Result resultGrupo = BL.Grupo.GetByIdPlantel(materia.Horario.Grupo.Plantel.IdPlantel);
+                    ML.Result resultGrupo = BL.Grupo.GetByIdPlantel(materia.Horario.Grupo.Plantel.IdPlantel.Value);
                     ViewBag.Titulo = "Actualizar";
                     return View(materia);
                 }
@@ -147,6 +147,7 @@ namespace PL.Controllers
         [HttpPost]
         public ActionResult Form(ML.Materia materia)
         {
+            materia.Materias.Add(materia);
             if (!ModelState.IsValid)
             {
                 IFormFile image = Request.Form.Files["fileImage"];
@@ -162,20 +163,38 @@ namespace PL.Controllers
                 if (materia.IdMateria == 0)
                 {
                     //AGREGAR
-                    ML.Result result = BL.Materia.Add(materia);
+                    //ML.Result result = BL.Materia.Add(materia);
+                    ML.Result result = new ML.Result();
+                    using (HttpClient client = new HttpClient())
+                    {
+                        string webApi = configuration["webapi"];
+                        client.BaseAddress = new Uri(webApi);
 
-                    if (result.Correct)
-                    {
-                        ViewBag.Titulo = "Registro Exitoso";
-                        ViewBag.Message = result.Message;
-                        return View("Modal");
+                        //HTTP POST
+                        Task< HttpResponseMessage> postTask = client.PostAsJsonAsync<ML.Materia>("add",materia);
+                        
+                        postTask.Wait();
+
+                        HttpResponseMessage resultTask = postTask.Result;
+                        if (resultTask.IsSuccessStatusCode)
+                        {
+                            result.Correct = true;
+                            ViewBag.Titulo = "Registro Exitoso";
+                            ViewBag.Message = result.Message;
+                            return View("Modal");
+                        }
+
+                        else
+                        {
+                            ViewBag.Titulo = "ERROR";
+                            ViewBag.Message = result.Message;
+                            return View("Modal");
+                        }
                     }
-                    else
-                    {
-                        ViewBag.Titulo = "ERROR";
-                        ViewBag.Message = result.Message;
-                        return View("Modal");
-                    }
+
+        
+
+         
 
                 }
                 else
